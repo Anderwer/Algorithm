@@ -1,0 +1,15 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "utility": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "iostream": "cpp",
+        "string": "cpp",
+        "algorithm": "cpp",
+        "limits": "cpp",
+        "xutility": "cpp",
+        "filesystem": "cpp"
+    }
+}
