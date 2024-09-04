@@ -1,8 +1,12 @@
-int qpow(int a, long long b, int p)
-{
-	int res = 1;
-	for(; b; b!=2, a = 1LL * a * a % p) if(b % 2) res = 1LL * res * a % p;
-	return res;
+int qpow(int a,int b,int p = mod) {
+	int sum=1;
+	while(b) {
+		if(b&1)
+			sum=sum*a%p;
+		a=a*a%p;
+		b>>=1;
+	}
+	return sum;
 }
 
 auto quick_pow = [&](auto&& self,ll a,ll b,ll p)->ll{ // 求a^b,且取模

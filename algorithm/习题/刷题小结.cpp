@@ -42,6 +42,10 @@ x = n % r;
 如果x < 0 ,则让 n /= r 之后n++; 且让 x -= r并存入ans数组
 最后倒序输出ans 
 
+特别的 : 十进制转二进制可以直接用bitset
+例如 long long x 转二进制可以 : bitset<63> y(x);
+再转回10进制可以 long long a = y.to_ullong();
+
 9.组合恒等式
 C(n,m)=C(n-1,m-1)+C(n-1,m)
 void prepare()
@@ -64,3 +68,11 @@ void prepare()
 
 假设用 C(n, k) 来表示从 n 个物品中选取 k 个的组合数，那么答案就是 C(n-1, n+k-1) = (n+k-1)! / [(n-1)! * k!]
 
+
+11. __builtin_popcountll 函数
+
+    __builtin_popcount 适用于int
+    __builtin_popcountl 适用于long int
+    __builtin_popcountll 适用于long long
+
+    这个函数用于求一个数中二进制下 1 的个数,通常用于状态压缩中

@@ -1,22 +1,46 @@
-int fa[maxn];//创建父节点数组
+const int maxn = 100010;
 
-void init(int n)//给父节点初始化，使每个节点的父亲为其自身
-{
-    for(int i = 1;i <= n;i++) fa[i] = i;
-}
+int fa[maxn]; //fa[]记录每个元素由谁代表
+int sz[maxn]; //sz[]记录每个集合元素个数
+int depth[maxn]; //depth[]记录每个集合的树深度
 
-int find(int x)//递归查找x元素的祖先,使用压缩路径优化
+void init(int n)
 {
-    if(fa[x] == x) return x;//当x与其父亲相同时为祖先，递归结束
-    else {
-        fa[x] = find(fa[x]);//将父节点设为根节点
-        return fa[x];//返回父节点
+    for(int i = 1; i <= n; i++)
+    {
+        fa[i] = i;
+        sz[i] = depth[i] = 1;
     }
 }
 
-void union(int i,int j)
+int find(int x)
 {
-    int i_fa = find(i);//找到i的祖先
-    int j_fa = find(j);//找到j的祖先
-    fa[j_fa] = i_fa; //让j的祖先变为i的祖先,即将j并入图
+    if(x == fa[x]) return x;
+    fa[x] = find(fa[x]);
+    return fa[x];
+}
+
+void unionn(int x, int y) //普通合并
+{
+    int fx = find(x), fy = find(y);
+    if(fx == fy) return;
+    fa[fx] = fy;
+}
+
+void Union_size(int x, int y) //启发式合并
+{
+    int fx = find(x), fy = find(y);
+    if(fx == fy) return;
+    if(sz[fx] > sz[fy]) swap(fx, fy);
+    fa[fx] = fy;
+    sz[fy] += sz[fx];
+}
+
+void Union_depth(int x, int y) //按深度合并
+{
+    int fx = find(x), fy = find(y);
+    if(fx == fy) return;
+    if(depth[fx] > depth[fy]) swap(fx, fy);
+    fa[fx] = fy;
+    if(depth[fx] == depth[fy]) depth[fy]++;
 }
