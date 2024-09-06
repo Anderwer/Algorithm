@@ -16,6 +16,13 @@ int exgcd(int a, int b, int &x, int &y)
     y = k - (a / b) * y;
     return d;
 }
+
+int up(int m, int n) //上取整
+{
+    if(m % n == 0) return m / n;
+    return m / n + 1;
+}
+
 void solve()
 {
     int a, b, c, x, y;
@@ -26,28 +33,21 @@ void solve()
         cout << "-1\n";
         return;
     }
-    a /= g;
-    b /= g;
-    c /= g;
-    i64 x_1 = x * c;
-    x_1 = (x_1 % b + b) % b;
-    i64 y_1 = (c - a * x_1) / b;
-    int gg = __gcd(a, b); // 此时方程变为 ax + by = c
-    if(y_1 <= 0)
+    x *= c / g;
+    y *= c / g; //将 ax + by = (a, b) 结果乘上 c / (a, b)
+    int x_min = (x % (b / g) + (b / g)) % (b / g);
+    int y_min = (y % (a / g) + (a / g)) % (a / g);
+    while(x_min <= 0) x_min += b / g;
+    while(y_min <= 0) y_min += a / g;
+    int x_max = (c - b * y_min) / a;
+    int y_max = (c - a * x_min) / b;
+    if(y_max <= 0)
     {
-        cout << x_1 << " ";
-        while(y_1 <= 0) y_1 += a / gg;
-        cout << y_1 << "\n";
+        cout << x_min << " " << y_min << "\n";
         return;
     }
-    int t1 = 0, t2 = 0, tmp1 = y_1, tmp2 = x_1;
-    while(tmp1 > a / gg) tmp1 -= a / gg, t1++;
-    while(tmp2 > b / gg) tmp2 -= b / gg, t2++;
-    cout << t1 + t2 + 1 << " ";
-    int x_min = x_1, y_max = y_1;
-    int x_max = x_min + t1 * (b / gg);
-    int y_min = y_max - t1 * (a / gg);
-    cout << x_min << " " << y_min << " " << x_max << " " << y_max << "\n";
+    cout << (x_max - x_min) / (b / g) + 1 << " " << x_min << " " << y_min << " " << x_max << " " << y_max << "\n";
+    
 }   
 
 signed main()
