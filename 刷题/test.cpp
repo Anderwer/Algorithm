@@ -2,17 +2,10 @@
 using i64 = long long;
 using namespace std;
 
-const int N = 1000;
-int b[N], c[N];
+array<int, 2> a {0};
 void solve()
 {
-    int n, pos;
-    cin >> n;
-    for(int i = 1; i <= n; i++) cin >> b[i], c[i] = b[i];
-    sort(b + 1, b + 1 + n);
-    sort(c + 1, c + 1 + n, greater<int>());
-    cin >> pos;
-    cout << c[upper_bound(c + 1, c + 1 + n, pos, greater<int>()) - c] << " " << b[upper_bound(b + 1, b + 1 + n, pos) - b];
+    cout << a[0];
 }
 int main()
 {
