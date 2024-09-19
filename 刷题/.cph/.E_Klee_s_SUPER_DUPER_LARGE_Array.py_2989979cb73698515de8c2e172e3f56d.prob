@@ -1,0 +1,1 @@
+{"name":"Local: E_Klee_s_SUPER_DUPER_LARGE_Array","url":"e:\\cs_study\\刷题\\E_Klee_s_SUPER_DUPER_LARGE_Array.py","tests":[{"id":1726721322430,"input":"4\n2 2\n7 2\n5 3\n1000000000 1000000000\n","output":"1\n5\n1\n347369930\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\cs_study\\刷题\\E_Klee_s_SUPER_DUPER_LARGE_Array.py","group":"local","local":true}
