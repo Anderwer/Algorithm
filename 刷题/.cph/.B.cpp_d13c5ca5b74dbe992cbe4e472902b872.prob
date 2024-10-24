@@ -1,0 +1,1 @@
+{"name":"Local: B","url":"e:\\cs_study\\刷题\\B.cpp","tests":[{"id":1728387063987,"input":"5\n1 1\n2 1\n2 2\n3 2\n4 4\n","output":"NO\nYES\nNO\nNO\nYES\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\cs_study\\刷题\\B.cpp","group":"local","local":true}
