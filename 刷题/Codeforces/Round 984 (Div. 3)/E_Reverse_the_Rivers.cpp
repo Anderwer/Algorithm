@@ -20,27 +20,37 @@ void solve()
 
     while(q--) // qlogn
     {   
-        bool flag = true;
-        int m, x; cin >> m, x = m;
-        int L = 1, R = 1e9;
-        while(x--)
+        int m; cin >> m;
+        int L = 0, R = n - 1;
+        while(m--)
         {
             char o;
             int r, c;
             cin >> r >> o >> c;
-            int pos = upper_bound(regions[r].begin(), regions[r].end(), c) - regions[r].begin();
-            if(o == '>') // 为 > 时, 区间[pos + 1, n]都满足
+            if(o == '<')
             {
-                //printf("[%d, %d]\n", pos + 1, n);
-                L = max(L, pos + 1);
+                int left = 0, right = n - 1;
+                while(left <= right)
+                {
+                    int mid = (left + right) / 2;
+                    if(regions[r][mid] >= c) right = mid - 1;
+                    else left = mid + 1;
+                }
+                R = min(R, right);
             }
-            else        // 为 < 时, 区间[1, pos]都满足
+            else
             {
-                //printf("[%d, %d]\n", 1, pos);
-                R = min(R, pos);
+                int left = 0, right = n - 1;
+                while(left <= right)
+                {
+                    int mid = (left + right) / 2;
+                    if(regions[r][mid] > c) right = mid - 1;
+                    else left = mid + 1;
+                }
+                L = max(L, left);
             }
         }
-        if(L <= R) cout << L << "\n";
+        if(L <= R) cout << L + 1 << "\n";
         else cout << -1 << "\n";
     }
 
