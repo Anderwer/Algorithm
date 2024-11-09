@@ -1,3 +1,4 @@
+#include <bits/stdc++.h>
 ----------------------------------------------------------------------------------------
 SPFA : 用于负环
 
@@ -34,47 +35,45 @@ bool spfa(int s, int n) //s是起点,n是n个点, 最终最短路距离dist[x]�
 ---------------------------------------------------------------------------------------------
 Dijkstra : 单源最短路O(mlogm)
 
-const int N = 500005;
+struct DIJ
+{
+    using PII = pair<i64, i64>;
+    vector<i64> dis;
+    vector<vector<array<i64, 2>>> G;
 
-struct node
-{
-    int v;//指向下一个点
-    int w;//边权
-    bool operator < (const node &b)const//重载 < 
+    int n;
+    DIJ() {}
+    DIJ(int n_): n(n_) {G.resize(n + 1);}
+
+    void add(int u, int v, int w)
     {
-        return w > b.w;
+        G[u].push_back({v, w});
     }
-}now,tmp;
-int n,m,s;
-vector<node> MAP[N];//图
-int d[N];//最短路数组
-bool vis[N];//标记数组
-void dijkstra(int s,int e)//从s到e
-{
-    d[s] = 0;
-    now.v = s;
-    now.w = 0;
-    priority_queue<node> q;
-    q.push(now);
-    while(!q.empty())//BFS
+
+    void dijkstra(int s, i64 start) //起点 s, 开始时带的权值 start
     {
-        now = q.top();
-        q.pop();
-        if(vis[now.v] == true) continue;
-        vis[now.v] = true;
-        int len = MAP[now.v].size();
-        for(int i = 0; i < len; i++)//遍历一个点所连的后面几个点
+        dis.assign(n + 1, 1e18);
+        priority_queue<PII> pq;
+        dis[s] = start;
+        pq.push({-dis[s], s});
+        while(!pq.empty())
         {
-            tmp = MAP[now.v][i];
-            if(d[now.v] + tmp.w < d[tmp.v])
+            auto [now, u] = pq.top();
+            now = -now;
+            if(dis[u] < now) continue;
+
+            for(auto [v, w] : G[u])
             {
-                d[tmp.v] = d[now.v] + tmp.w;
-                q.push((node){ tmp.v, d[tmp.v]});
+                auto nxt = now + w;
+                if(dis[v] > now)
+                {
+                    dis[v] = now;
+                    pq.push({-dis[v], v});
+                }
             }
         }
     }
-}
-
+};
 ----------------------------------------------------------------------------------------
 Floyd : 全源最短路,使用邻接矩阵O(n3)
 

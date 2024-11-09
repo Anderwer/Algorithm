@@ -15,6 +15,8 @@
 
 携带区间信息建树:
 
+#define lc k<<1
+#define rc k<<1|1
 const int N = 1e4 + 10;
 struct node{
     int L,R,mx;
