@@ -94,5 +94,7 @@
         "xmemory": "cpp",
         "xtr1common": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "appworks.timeLimit": 365,
+    "cph.general.defaultLanguage": "cpp"
 }

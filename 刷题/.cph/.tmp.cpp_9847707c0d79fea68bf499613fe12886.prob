@@ -1,0 +1,1 @@
+{"name":"Local: tmp","url":"e:\\cs_study\\刷题\\tmp.cpp","tests":[{"id":1740569546664,"input":"99 0","output":""},{"id":1740569582413,"input":"4 7\n11 6 11 6 3 10 6\n7 9 6 13 5 15 5\n1 10 12 7 13 7 5\n13 11 10 8 10 12 13","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\cs_study\\刷题\\tmp.cpp","group":"local","local":true}

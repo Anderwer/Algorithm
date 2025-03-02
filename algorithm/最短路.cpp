@@ -39,6 +39,7 @@ struct DIJ
 {
     using PII = pair<i64, i64>;
     vector<i64> dis;
+    vector<int> vis;
     vector<vector<array<i64, 2>>> G;
 
     int n;
@@ -53,27 +54,31 @@ struct DIJ
     void dijkstra(int s, i64 start) //起点 s, 开始时带的权值 start
     {
         dis.assign(n + 1, 1e18);
+        vis.assign(n + 1, 0);
         priority_queue<PII> pq;
         dis[s] = start;
         pq.push({-dis[s], s});
         while(!pq.empty())
         {
             auto [now, u] = pq.top();
+            pq.pop();
             now = -now;
-            if(dis[u] < now) continue;
+            if(vis[u]) continue;
+            vis[u] = 1;
 
             for(auto [v, w] : G[u])
             {
                 auto nxt = now + w;
                 if(dis[v] > now)
                 {
-                    dis[v] = now;
+                    dis[v] = nxt;
                     pq.push({-dis[v], v});
                 }
             }
         }
     }
 };
+
 ----------------------------------------------------------------------------------------
 Floyd : 全源最短路,使用邻接矩阵O(n3)
 

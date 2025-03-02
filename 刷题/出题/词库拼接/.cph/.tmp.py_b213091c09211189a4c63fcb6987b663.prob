@@ -1,0 +1,1 @@
+{"name":"Local: tmp","url":"e:\\cs_study\\刷题\\出题\\词库拼接\\tmp.py","tests":[{"id":1740476752612,"input":"2\n5 3\n1 3 3\n3 5 3\n1 5 5\n6 3\n1 2 3\n5 6 3\n1 6 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\cs_study\\刷题\\出题\\词库拼接\\tmp.py","group":"local","local":true}

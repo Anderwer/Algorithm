@@ -1,0 +1,1 @@
+{"name":"Local: test","url":"e:\\cs_study\\刷题\\出题\\词库拼接\\test.cpp","tests":[{"id":1740475440399,"input":"6\njxusticpc\njxust\njxust\nicpc\njx\nust\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\cs_study\\刷题\\出题\\词库拼接\\test.cpp","group":"local","local":true}

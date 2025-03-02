@@ -1,56 +1,31 @@
-int qpow(int a,int b,int p = mod) {
-	int sum=1;
-	while(b) {
-		if(b&1)
-			sum=sum*a%p;
-		a=a*a%p;
-		b>>=1;
+
+快速幂
+i64 qpow(int a, int b)
+{
+	i64 res = 1;
+	while(b)
+	{
+		if(b & 1) res = res * a % p;
+		a = a * a % p;
+		b >>= 1; 
 	}
-	return sum;
+	return res;
 }
 
-auto quick_pow = [&](auto&& self,ll a,ll b,ll p)->ll{ // 求a^b,且取模
-    	if(b == 0) return 1;
-    	ll res = self(self,a, b >> 1,p);
-    	res = 1LL * res * res % p;
-    	if(b % 2 == 1) res = 1LL * res * a % p;
-    	return res;
-	};
-
 快速乘
+i64 qmul(i64 a, i64 b)
+{
+	i64 res = 0;
+	while(b)
+	{
+		if(b & 1) res = (res + a) % p;
+		a = (a + a) % p;
+		b >>= 1;
+	}
+	return res;
+}
 
-auto mul = [&](ll a,ll b,ll p)->ll{
-		ll res=0;
-		while(b){
-			if(b & 1) res = (res + a) % p;
-			a = (a + a) % p;
-			b >>= 1;
-		}
-		return res;
-	};
 
-
-快速乘快速幂
-
-auto mul = [&](ll a,ll b,ll p)->ll{ //快速乘
-		ll res=0;
-		while(b){
-			if(b & 1) res = (res + a) % p;
-			a = (a + a) % p;
-			b >>= 1;
-		}
-		return res;
-	};
-	
-	auto quick_pow = [&](ll a,ll b,ll p)->ll{ // 快速乘快速幂
-    	ll res = 1;
-    	while(b){
-    		if(b & 1) res = mul(res, a, p);
-    		a = mul(a, a, p);
-    		b >>= 1;
-    	}
-    	return res;
-	};
 -------------------------------------------------
                   //高精度下的快速幂
 #include<array>
