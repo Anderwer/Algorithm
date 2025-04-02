@@ -12,36 +12,19 @@
 
 (3).得到最大长度ans
 
-具体实现:
-int LIS(vector<int>& a)
-{
-    vector<int> dp(maxn);
-    dp[1] = 1; //初始化
-    for(int i = 2; i < (int)a.size(); i++){ //O(N^2)
-        for(int j = 1; j < i; j++){
-            if(a[i] < a[j]){
-                dp[i] = max(dp[i],dp[j] + 1);
-                ans = max(ans,a[i]);
-            }
-        }
-    }
-    return ans;
-}
-
+具体实现: 略
 
 2. O(NlogN) 做法: dp[i] 为以i结尾的最长子序列的a长度
 
 //最长上升子序列
-int LIS(vector<int> &a)
+int LIS(string& a) // a[1] 开始, string a 可以改成 vector<int> a
 {
-    vector<int> dp((int)a.size() + 1,0);
-    int len = 0, last = 0;
-    for(int i = 1; i < (int)a.size(); i++){
-        if(a[i] > dp[last]) dp[++last] = a[i],len++;
-        else {
-            int pos = lower_bound(dp.begin() + 1,dp.begin() + len, a[i]) - dp.begin();
-            dp[pos] = a[i];
-        }
+    int len = 0;
+    vector<int> f(a.size() + 1, 0);
+    for(int i = 1; i < a.size(); i++)
+    {
+        if(a[i] > f[len]) f[++len] = a[i];
+        else f[lower_bound(f.begin() + 1, f.begin() + len + 1, a[i]) - f.begin()] = a[i];
     }
     return len;
 }
@@ -50,58 +33,13 @@ int LIS(vector<int> &a)
 
 思路:只需将最长上升子序列中的if 里的 > 改成 >= ,lower_bound 改成 upper_bound
 
-//最长不下降子序列
-int LNDS(vector<int> &a)
-{
-    vector<int> dp((int)a.size() + 1,0);
-    int len = 0, last = 0;
-    for(int i = 1; i < (int)a.size(); i++){
-        if(a[i] >= dp[last]) dp[++last] = a[i],len++;
-        else {
-            int pos = upper_bound(dp.begin() + 1,dp.begin() + len, a[i]) - dp.begin();
-            dp[pos] = a[i];
-        }
-    }
-    return len;
-}
-
 三.最长下降子序列(LDS)
 
 思路:只需将最长上升子序列中的if 里的 > 改成 < ,lower_bound 重载 greater<int>()
 
-//最长下降子序列
-int LDS(vector<int> &a)
-{
-    vector<int> dp((int)a.size() + 1,(1 << 30));
-    int len = 0, last = 0;
-    for(int i = 1; i < (int)a.size(); i++){
-        if(a[i] < dp[last]) dp[++last] = a[i],len++;
-        else {
-            int pos = lower_bound(dp.begin() + 1,dp.begin() + len, a[i], greater<int>()) - dp.begin();
-            dp[pos] = a[i];
-        }
-    }
-    return len;
-}
-
 四.最长不上升子序列(LNIS)
 
 思路:只需将最长下降子序列中的if 里的 < 改成 <= ,lower_bound 改成 upper_bound 并重载 greater<int>()
-
-//最长不上升子序列
-int LNIS(vector<int> &a)
-{
-    vector<int> dp((int)a.size() + 1,(1 << 30));
-    int len = 0, last = 0;
-    for(int i = 1; i < (int)a.size(); i++){
-        if(a[i] <= dp[last]) dp[++last] = a[i],len++;
-        else {
-            int pos = upper_bound(dp.begin() + 1,dp.begin() + len, a[i], greater<int>()) - dp.begin();
-            dp[pos] = a[i];
-        }
-    }
-    return len;
-}
 
 值得一提的是:
     由Dilworth定理可知,最大反链中元素的数目必等于最小链划分中链的数目.则有以下四个结论:

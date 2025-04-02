@@ -64,7 +64,6 @@ void solve()
     T.dijkstra(1, 0);
     
     for(int i = 1; i <= n; i++) cout << T.dis[i] << " ";
-
 }
 
 int main()

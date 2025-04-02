@@ -57,3 +57,9 @@ int C(int a, int b)
     if(b > a || b < 0) return 0;
     return (fact[a] * ((infact[b] * infact[a - b]) % p)) % p;
 }
+
+
+组合数性质:
+
+1. 奇偶性: 对于C(n, k), 若 n & k == k, 则 C(n, k) 为奇数, 否则为偶数.
+ 

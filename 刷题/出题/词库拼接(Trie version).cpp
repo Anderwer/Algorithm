@@ -3,8 +3,8 @@ using i64 = long long;
 using namespace std;
 const int N = 2E6 + 10;
 const int charsize = 26;
-int Trie[N + 1][charsize];
-bool isend[N + 1];
+int Trie[N][charsize];
+bool isend[N];
 int cnt = 0;
 
 void insert(string& s)
@@ -19,12 +19,12 @@ void insert(string& s)
     isend[cur] = true;
 }
 
-bool search(string& s, int L, int R)
+bool search(string& s)
 {
     int cur = 0;
-    for(int i = L; i <= R; i++)
+    for(auto c : s)
     {
-        int x = s[i] - 'a';
+        int x = c - 'a';
         if(!Trie[cur][x]) return false;
         cur = Trie[cur][x];
     }
@@ -45,9 +45,11 @@ void solve()
     for(int i = 1; i <= n; i++)
     {
         int len = a[i].size();
-        for(int j = 0; j < len - 1; j++) //分割成 [0, j] 和 [j + 1, len - 1]
+        for(int j = 1; j < len; j++) //分割成 [0, j - 1] 和 [j, len - 1]
         {
-            if(search(a[i], 0, j) && search(a[i], j + 1, len - 1)) ans++;
+            string pre = a[i].substr(0, j);
+            string suf = a[i].substr(j);
+            if(search(pre) && search(suf)) ans++;
         }
     }
     cout << ans << "\n";
