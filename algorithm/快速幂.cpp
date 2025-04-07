@@ -1,6 +1,6 @@
 
 快速幂
-i64 qpow(int a, int b)
+i64 qpow(i64 a, i64 b)
 {
 	i64 res = 1;
 	while(b)

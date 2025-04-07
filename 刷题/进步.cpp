@@ -84,6 +84,9 @@ void solve()
     cout << ans << "\n";
 }
 
+// 快速查询可修改前缀和
+// Fenwick Tree 即可
+
 signed main()
 {
     std::ios::sync_with_stdio(false);
