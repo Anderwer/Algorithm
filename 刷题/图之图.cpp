@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
+#define int long long
 using i64 = long long;
 using namespace std;
+const int p = 1e9 + 7;
 
 void solve()
 {
@@ -17,13 +19,28 @@ void solve()
         g[u].push_back(v);
         if(u != v) g[v].push_back(u);
     }
+
+    int k = sqrt(m);
+    vector<vector<int>> h(c + 1); //连接重点
+    for(int i = 1; i <= c; i++)
+    {
+        if(g[i].size() >= k)
+            for(auto v : g[i]) h[v].push_back(i);
+    }
+
     vector<int> f(n + 1, 0);
+    vector<int> cnt(c + 1, 0);
+    f[1] = 1;
     for(int i = 1; i <= n; i++)
     {
-        if(f[a[i]] == 0) f[a[i]] = 1;
-        for(auto v : g[a[i]]) f[a[i]] += f[v];
+        int col = a[i];
+        if(g[col].size() >= k) 
+            f[i] = (f[i] + cnt[col]) % p;
+        else 
+            for(auto v : g[col]) f[i] = (f[i] + cnt[v]) % p;
+        for(auto v : h[col]) cnt[v] = (cnt[v] + f[i]) % p;
     }
-    cout << f[a[n]];
+    cout << f[n] % p << "\n";
 }
 
 // 观察到, 如果是 [1, 1, 1, 1, 1, ...] 这种的会有 n^2 条边, 无法建图
@@ -33,11 +50,25 @@ void solve()
 
 // 对于统计有向边方案数, 可以利用经典DP
 // 由于只能从小到大连边, 因此设 f[i]: 到第 i 个节点为止, 前 i - 1 个节点中的颜色能够连向 i 当前颜色的方案数
-// 则有转移 for(auto v : g[a[i]]) f[i] += f[v]
-// 初始化如果 f[i] = 0, 则 f[i] = 1
-// 
+// 每次转移完之后, 我们可以用一个 cnt[a[i]] 记录到目前为止到达每种颜色的方案数 
+// 则有转移 for(auto v : g[a[i]]) f[i] += cnt[v]
+// 初始化 f[1] = 1
+// 分析复杂度发现, 上述构图方法有 m 条边, 最坏时间复杂度能到达O(n * m), 考虑优化
 
-int main()
+// 分析发现, 复杂度主要在于 DP 转移环节的 for(auto v : g[a[i]])
+// 由于 g[a[i]] 的出度可能过大, 考虑优化
+// 对于无向图求点权和的优化, 可以考虑根号分治
+// 我们设定一个阈值 k, 将每种颜色根据其出度 >= k 和 < k 分为重点和轻点
+// 由于一共有 m 条边, 因此所有节点的出度和为 m, 因此重点一共有不超过 m / k 个
+// 因此, 如果 g[i] 的出度 >= k, 那么它是重点, 考虑重点如何计数
+// 因为重点一共有 m / k 个, 因此可以先预处理每个节点和哪些重点相连
+// 在计数时, 如果这个点是轻点, 则暴力DP统计数量, O(k)
+// 如果这个点是重点, 则直接 f[i] += cnt[g[i]]
+// 每次统计完当前节点的方案数后, 将方案数加到与其相连的所有重点上, O(m / k)
+// 因此总的时间复杂度为 O(n * (k + m / k))
+// 根据均值不等式, 选择 k = sqrt(m) 时有复杂度 O(n * sqrt(m))
+
+signed main()
 {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);

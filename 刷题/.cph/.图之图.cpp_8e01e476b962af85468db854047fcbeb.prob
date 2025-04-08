@@ -1,0 +1,1 @@
+{"name":"Local: 图之图","url":"/root/Algorithm/刷题/图之图.cpp","tests":[{"id":1744072389408,"input":"1\n5 3\n1 2 3 2 3\n3\n1 2\n1 3\n2 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/root/Algorithm/刷题/图之图.cpp","group":"local","local":true}
