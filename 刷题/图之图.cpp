@@ -30,15 +30,20 @@ void solve()
 
     vector<int> f(n + 1, 0);
     vector<int> cnt(c + 1, 0);
+    vector<int> sum(c + 1, 0);
     f[1] = 1;
     for(int i = 1; i <= n; i++)
     {
         int col = a[i];
         if(g[col].size() >= k) 
-            f[i] = (f[i] + cnt[col]) % p;
+            f[i] = (f[i] + sum[col]) % p;
         else 
-            for(auto v : g[col]) f[i] = (f[i] + cnt[v]) % p;
-        for(auto v : h[col]) cnt[v] = (cnt[v] + f[i]) % p;
+            for(auto v : g[col]) 
+                f[i] = (f[i] + cnt[v]) % p;
+
+        cnt[col] = (cnt[col] + f[i]) % p;
+        for(auto v : h[col]) 
+            sum[v] = (sum[v] + f[i]) % p;
     }
     cout << f[n] % p << "\n";
 }
@@ -58,16 +63,19 @@ void solve()
 // 分析发现, 复杂度主要在于 DP 转移环节的 for(auto v : g[a[i]])
 // 由于 g[a[i]] 的出度可能过大, 考虑优化
 // 对于无向图求点权和的优化, 可以考虑根号分治
+
 // 我们设定一个阈值 k, 将每种颜色根据其出度 >= k 和 < k 分为重点和轻点
 // 由于一共有 m 条边, 因此所有节点的出度和为 m, 因此重点一共有不超过 m / k 个
 // 因此, 如果 g[i] 的出度 >= k, 那么它是重点, 考虑重点如何计数
 // 因为重点一共有 m / k 个, 因此可以先预处理每个节点和哪些重点相连
 // 在计数时, 如果这个点是轻点, 则暴力DP统计数量, O(k)
-// 如果这个点是重点, 则直接 f[i] += cnt[g[i]]
-// 每次统计完当前节点的方案数后, 将方案数加到与其相连的所有重点上, O(m / k)
+// 每次统计完当前节点的方案数后, 我们开一个数组 sum[i] 用于统计 h[i] 中每个点到该重点的方案数, 将当前方案数加到与它相连的所以重点上, 即 for(auto v : h[sum]) sum[v] += f[i], O(m / k)
+// 如果这个点是重点, 则直接 f[i] += sum[col], O(1)
+// 上述操作完成后, 再将到这个点的方案书加回这个点所在颜色的方案数上, 即 cnt[col] += f[i]
 // 因此总的时间复杂度为 O(n * (k + m / k))
 // 根据均值不等式, 选择 k = sqrt(m) 时有复杂度 O(n * sqrt(m))
 
+// ps. 对于无向图求点权和的优化, 根号分治的核心是对于出度大的点(重点), 考虑反向连边, 对于重点的统计, 每次统计完一个点的方案数就加到与之相连的重点上
 signed main()
 {
     std::ios::sync_with_stdio(false);
