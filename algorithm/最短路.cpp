@@ -1,36 +1,111 @@
 #include <bits/stdc++.h>
 ----------------------------------------------------------------------------------------
-SPFA : 用于负环
+SPFA : 判断负环, 负权图单源最短路O(nm)
 
-const int maxn = 5e5 + 10;
-
-vector<pair<int,int>> g[maxn]; //有向图,g[u].first是v,g[u].second是w
-int dist[maxn], cnt[maxn], vis[maxn];
-queue<int> q;
-
-bool spfa(int s, int n) //s是起点,n是n个点, 最终最短路距离dist[x]表示从s到x的最短距离
+struct SPFA
 {
-    memset(dist, 127, (n + 1) * sizeof(int));
-    dist[s] = 0, vis[s] = 1;
-    q.push(s);
-    while(!q.empty())
+    vector<i64> dis;
+    vector<int> cnt;
+    vector<int> vis;
+    vector<vector<array<i64, 2>>> G;
+
+    int n;
+    SPFA() {};
+    SPFA(int n_)
     {
-        int u = q.front();
-        q.pop(), vis[u] = 0;
-        for(auto ed : g[u])
+        n = n_;
+        G = vector<vector<array<i64, 2>>>(n + 1);
+        dis = vector<i64>(n + 1, 2e18);
+        cnt = vector<int>(n + 1, 0);
+        vis = vector<int>(n + 1, 0);
+    }
+
+    void add(int u, int v, int w)
+    {
+        G[u].push_back({v, w});
+        if(w >= 0) G[v].push_back({u, w});
+    }
+
+    bool spfa(int s)
+    {
+        queue<int> q;
+        dis[s] = cnt[s] = 0;
+        q.push(s);
+        while(!q.empty())
         {
-            int v = ed.first, w = ed.second;
-            if(dist[v] > dist[u] + w)
+            int u = q.front();
+            q.pop();
+            vis[u] = 0;
+            for(auto [v, w] : G[u])
             {
-                dist[v] = dist[u] + w;
-                cnt[v] = cnt[u] + 1;
-                if(cnt[v] >= n) return false;
-                if(!vis[v]) q.push(v), vis[v] = 1;
+                if(dis[v] > dis[u] + w)
+                {
+                    dis[v] = dis[u] + w;
+                    cnt[v] = cnt[u] + 1;
+                    if(cnt[v] >= n)
+                        return true;
+                    if(vis[v] == false)
+                        q.push(v), vis[v] = 1;
+                }
             }
         }
+        return false;
     }
-    return true;
-}
+};
+
+---------------------------------------------------------------------------------------------
+差分约束问题: SPFA求解O(nm)
+
+struct SPFA
+{
+    vector<i64> dis;
+    vector<int> cnt;
+    vector<int> vis;
+    vector<vector<array<i64, 2>>> G;
+
+    int n;
+    SPFA() {};
+    SPFA(int n_)
+    {
+        n = n_;
+        G = vector<vector<array<i64, 2>>>(n + 1);
+        dis = vector<i64>(n + 1, 2e18);
+        cnt = vector<int>(n + 1, 0);
+        vis = vector<int>(n + 1, 0);
+    }
+
+    void add(int u, int v, int w)
+    {
+        G[u].push_back({v, w});
+    }
+
+    bool spfa(int s)
+    {
+        queue<int> q;
+        dis[s] = cnt[s] = 0;
+        q.push(s);
+        while(!q.empty())
+        {
+            int u = q.front();
+            q.pop();
+            vis[u] = 0;
+            for(auto [v, w] : G[u])
+            {
+                if(dis[v] > dis[u] + w)
+                {
+                    dis[v] = dis[u] + w;
+                    cnt[v] = cnt[u] + 1;
+                    if(cnt[v] >= n)
+                        return true;
+                    if(vis[v] == false)
+                        q.push(v), vis[v] = 1;
+                }
+            }
+        }
+        return false;
+    }
+};
+
 
 ---------------------------------------------------------------------------------------------
 Dijkstra : 单源最短路O((n + m)logn)
@@ -44,7 +119,13 @@ struct DIJ
 
     int n;
     DIJ() {}
-    DIJ(int n_): n(n_) {G.resize(n + 1);}
+    DIJ(int n_)
+    {
+        n = n_;
+        G = vector<vector<array<i64, 2>>>(n + 1);
+        dis = vector<i64>(n + 1, 2e18);
+        vis = vector<int>(n + 1, 0);
+    }
 
     void add(int u, int v, int w)
     {
@@ -53,8 +134,6 @@ struct DIJ
 
     void dijkstra(int s, i64 start) //起点 s, 开始时带的权值 start
     {
-        dis.assign(n + 1, 1e18);
-        vis.assign(n + 1, 0);
         priority_queue<PII> pq;
         dis[s] = start;
         pq.push({-dis[s], s});

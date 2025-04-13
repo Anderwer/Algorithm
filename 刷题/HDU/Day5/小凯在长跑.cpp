@@ -1,56 +1,22 @@
 #include <bits/stdc++.h>
 using i64 = long long;
 using namespace std;
-int d, r, x, y;
-
-double dis_1()
-{
-    if (y >= -d && y <= d) return abs(x - r);
-    double dist1 = hypot(x - r, y - d);
-    double dist2 = hypot(x - r, y + d);
-    return min(dist1, dist2);
-}
-
-double dis_2()
-{
-    if (y >= -d && y <= d) return abs(x + r);
-    double dist1 = hypot(x + r, y - d);
-    double dist2 = hypot(x + r, y + d);
-    return min(dist1, dist2);
-}
-
-double dis_3()
-{
-    double len = hypot(x, y - d);
-    if(len == 0) return r;
-    double px = ((double)(x) / len) * r;
-    double py = d + ((double)(y - d) / len) * r;
-    if(py >= d) return abs(len - r);
-    double dist1 = hypot(x - r, y - d);
-    double dist2 = hypot(x + r, y - d);
-    return min(dist1, dist2);
-}
-
-double dis_4()
-{
-    double len = hypot(x, y + d);
-    if(len == 0) return r;
-    double px = ((double)(x) / len) * r;
-    double py = -d + ((double)(y + d) / len) * r;
-    if(py <= -d) return abs(len - r);
-    double dist1 = hypot(x - r, y + d);
-    double dist2 = hypot(x + r, y + d);
-    return min(dist1, dist2);
-}
 
 void solve()
 {
+    i64 d, r, x, y;
     cin >> d >> r >> x >> y;
-
-    double ans = min({dis_1(), dis_2(), dis_3(), dis_4()});
-    cout << (int)(ans + 0.5) << "\n";
     
+    double ans = 0;
+    if(y >= d) ans = abs(hypot(x, y - d) - r);
+    else if(y <= -d) ans = abs(hypot(x, y + d) - r);
+    else ans = min(abs(x - r), abs(x + r));
+    cout << round(ans) << "\n";
 }
+
+// 分类讨论, 如果点在 (-d, d) 范围内, 则答案就是点到直线的距离
+// 否则, 如果点在上半部分的圆那边, 点到圆弧的最短距离就是点到圆心的距离 - 半径
+// 在下半部分的圆那边也同理
 
 int main()
 {

@@ -129,14 +129,8 @@ void solve()
     depth[s] = 1;
     dfs(s,0);
     for(int i = 1; i <= 20; i++)
-    {
         for(int j = 1; j <= n; j++)
-        {
             if(father[j][i - 1]) father[j][i] = father[father[j][i - 1]][i - 1];
-            //节点j往上跳2^i步等价于j往上跳2^(i-1)步的那个节点再往上跳2^(i-1)步
-            //倍增LCA递推式
-        }
-    }
     for(int i = 1; i <= m; i++)
     {
         int x, y;

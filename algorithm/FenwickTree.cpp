@@ -1,3 +1,4 @@
+
 template<typename T>
 struct Fenwick
 {

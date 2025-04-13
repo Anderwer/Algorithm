@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using i64 = long long;
+using namespace std;
 
 struct ToopSort
 {
@@ -37,3 +40,31 @@ struct ToopSort
         return tp.size() == n;
     }
 };
+
+void solve()
+{
+    int n;
+    cin >> n;
+
+    ToopSort T(n);
+    for(int u = 1; u <= n; u++)
+    {
+        int v;
+        while(cin >> v && v != 0) T.add(u, v);
+    }
+    T.toopsort();
+    for(auto v : T.tp) cout << v << " ";
+}
+
+int main()
+{
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    int t = 1;
+    //cin >> t;
+    while(t--)
+    {
+        solve();
+    }
+    return 0;
+}
