@@ -109,7 +109,49 @@ struct SPFA
 };
 
 ---------------------------------------------------------------------------------------------
-Dijkstra : 单源最短路O((n + m)logn)
+Dijkstra : 单源最短路O(n^2)
+
+struct DIJ
+{
+    const i64 INF = 2e18;
+    using PII = pair<i64, i64>;
+    vector<i64> dis;
+    vector<int> vis;
+    vector<vector<array<i64, 2>>> G;
+
+    int n;
+    DIJ() {}
+    DIJ(int n_)
+    {
+        n = n_;
+        G = vector<vector<array<i64, 2>>>(n + 1);
+    }
+
+    void add(int u, int v, int w)
+    {
+        G[u].push_back({v, w});
+    }
+
+    void dijkstra(int s, i64 start) //起点 s, 开始时带的权值 start
+    {
+        dis = vector<i64>(n + 1, INF);
+        vis = vector<int>(n + 1, 0);
+        dis[s] = start;
+        
+        for(int i = 1; i <= n; i++)
+        {
+            i64 u = 0, mind = INF;
+            for(int j = 1; j <= n; j++)
+                if(vis[j] == false && dis[j] < mind) u = j, mind = dis[j];
+            vis[u] = true;
+            for(auto [v, w] : G[u])
+                if(dis[v] > dis[u] + w) dis[v] = dis[u] + w;
+        }
+    }
+};
+
+---------------------------------------------------------------------------------------------
+Dijkstra : 单源最短路O(mlogm)
 
 struct DIJ
 {
@@ -124,8 +166,6 @@ struct DIJ
     {
         n = n_;
         G = vector<vector<array<i64, 2>>>(n + 1);
-        dis = vector<i64>(n + 1, 2e18);
-        vis = vector<int>(n + 1, 0);
     }
 
     void add(int u, int v, int w)
@@ -135,6 +175,8 @@ struct DIJ
 
     void dijkstra(int s, i64 start) //起点 s, 开始时带的权值 start
     {
+        dis = vector<i64>(n + 1, 2e18);
+        vis = vector<int>(n + 1, 0);
         priority_queue<PII> pq;
         dis[s] = start;
         pq.push({-dis[s], s});
@@ -162,31 +204,40 @@ struct DIJ
 ----------------------------------------------------------------------------------------
 Floyd : 全源最短路,使用邻接矩阵O(n3)
 
-const int N = 1005;
-int f[N][N];
-
-void folyd(int n)
+struct Floyd
 {
-    for(int k = 1; k <= n; k++)
-        for(int i = 1; i <= n; i++)
-            for(int j = 1; j <= n; j++)
-                if(f[i][k] < (1 << 30) && f[k][j] < (1 << 30)) 
-                    f[i][j] = min(f[i][j], f[i][k] + f[k][j]);
-}
+    const int INF = (1 << 31) - 1;
+    int n;
+    vector<vector<int>> f;
 
-void solve()
-{
-    int n,m,k; //n个点,m条边,k次询问
-    cin >> n >> m >> k;
-    memset(f, 127, sizeof(f));
-    for(int i = 1; i <= m; i++)
+    Floyd() {};
+    Floyd(int n_)
     {
-        int u,v,w;
-        cin >> u >> v >> w;
+        n = n_;
+        f = vector<vector<int>>(n + 1, vector<int>(n + 1, INF));
+    }
+
+    void add(int u, int v, int w)
+    {
         f[u][v] = w;
     }
-    folyd(n);
-}
+
+    void init()
+    {
+        for(int i = 1; i <= n; i++) add(i, i, 0);
+    }
+
+    vector<vector<int>> floyd()
+    {
+        init();
+        for(int k = 1; k <= n; k++)
+            for(int i = 1; i <= n; i++)
+                for(int j = 1; j <= n; j++)
+                    if(f[i][k] < INF && f[k][j] < INF)
+                        f[i][j] = min(f[i][j], f[i][k] + f[k][j]);
+        return f;
+    }
+};
 
 -----------------------------------------------------------------------------------------------------------------
 Johnson: 全源最短路, 可处理负边权 O(nmlogm)
@@ -201,8 +252,8 @@ struct Johnson
     vector<vector<array<i64, 2>>> G;
 
     int n;
-    DIJ() {}
-    DIJ(int n_)
+    Johnson() {}
+    Johnson(int n_)
     {
         n = n_;
         G = vector<vector<array<i64, 2>>>(n + 1);
@@ -261,7 +312,7 @@ struct Johnson
             for(auto [v, w] : G[u])
             {
                 auto nxt = now + w;
-                if(dis[v] > now)
+                if(dis[v] > nxt)
                 {
                     dis[v] = nxt;
                     pq.push({-dis[v], v});
@@ -273,7 +324,7 @@ struct Johnson
     vector<vector<i64>> johnson()
     {
         vector<vector<i64>> alldis(n + 1, vector<i64>(n + 1, 0));
-        if(spfa() == true)
+        if(spfa() == true) // alldis[0][0] = true 说明图有负环, 不存在最短路
         {
             alldis[0][0] = true;
             return alldis;
@@ -284,6 +335,7 @@ struct Johnson
 
         for(int i = 1; i <= n; i++) // 枚举起点
         {
+            vis = vector<int>(n + 1, 0);
             dis = vector<i64>(n + 1, 1e9); //重置 dis
             dijkstra(i, 0);
             alldis[i] = dis;

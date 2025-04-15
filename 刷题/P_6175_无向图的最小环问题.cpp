@@ -91,10 +91,7 @@ void solve()
     F.init(m);
     int ans = F.floyd();
     if(ans == INF) cout << "No solution.";
-    else
-    {
-        for(auto v : F.path) cout << v << " ";
-    }
+    else cout << ans << "\n";
 }
 
 int main()
