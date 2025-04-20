@@ -24,3 +24,5 @@ struct ST //gcd
         return gcd(f[l][k], f[r - (1 << k) + 1][k]);
     }
 };
+// 区间 [L, R] 的 gcd 等于 a[L] 和所有相邻两数之差绝对值的 gcd
+// gcd(a[L], a[L + 1], ...) = gcd(a[L], |a[L] - a[L + 1]|, |a[L + 1] - a[L + 2]|, ...)
