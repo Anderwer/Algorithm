@@ -35,6 +35,7 @@
 - 字符串哈希
 - 组合数
 - 欧拉路
+- 矩阵快速幂
 - FFT / NTT
 - 数位 DP 骨架
 - 莫队
@@ -63,6 +64,10 @@
 - 树的相关知识
 - SG 定理
 - 线性 DP（最长子序列）
+- 状态压缩与矩阵快速幂
+- 子数组极值贡献与单调栈
+- 前后缀 gcd 与 gcd 分段压缩
+- 延迟删除 multiset 与扫描型 DP
 
 特点：
 
@@ -202,7 +207,7 @@
 如果你是从 GitHub 首页点进来的，那么最推荐的阅读入口是：
 
 1. `algorithm/README.md`
-2. `Codeforces/Codeforces分类索引.md`
-3. `notes/`
+2. `notes/README.md`
+3. `Codeforces/Codeforces分类索引.md`
 
 这样能最快了解这个仓库的结构和用途。
