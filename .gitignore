@@ -1,0 +1,82 @@
+# -----------------------------
+# OS files
+# -----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# -----------------------------
+# Editor / IDE
+# -----------------------------
+.vscode/
+.idea/
+*.code-workspace
+
+# JetBrains
+*.iml
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userossc
+*.sln.docstates
+
+# -----------------------------
+# Build outputs
+# -----------------------------
+*.exe
+*.out
+*.app
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.class
+*.jar
+
+# -----------------------------
+# CMake / build directories
+# -----------------------------
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+Makefile
+
+# -----------------------------
+# Temporary / logs
+# -----------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# -----------------------------
+# Python cache
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# -----------------------------
+# Local helper / generated files
+# -----------------------------
+.cph/
+Agent.md
+比赛知识点总索引.md
+
+# -----------------------------
+# Archives
+# -----------------------------
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
